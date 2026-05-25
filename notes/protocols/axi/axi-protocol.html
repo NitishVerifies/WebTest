@@ -5,7 +5,7 @@
   <title>AMBA AXI Protocol — Nitish Agrawal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../shared.css" />
+  <link rel="stylesheet" href="../_shared.css" />
   <style>
     /* AXI accent overrides */
     .note-eyebrow { background: rgba(255,107,43,0.1); color: var(--accent2); border: 1px solid rgba(255,107,43,0.25); }
@@ -183,5 +183,26 @@ Cycle 2: AR — ARID=1, ARADDR=0x2000
   <span id="yr"></span>
 </footer>
 <script>document.getElementById('yr').textContent = '© ' + new Date().getFullYear();</script>
+
+  <script>
+  // Mobile hamburger
+  (function() {
+    var btn = document.getElementById('navHamburger');
+    var drawer = document.getElementById('navDrawer');
+    if (!btn || !drawer) return;
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      drawer.classList.toggle('open');
+    });
+    drawer.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() { drawer.classList.remove('open'); });
+    });
+    document.addEventListener('click', function(e) {
+      if (!btn.contains(e.target) && !drawer.contains(e.target)) {
+        drawer.classList.remove('open');
+      }
+    });
+  })();
+  </script>
 </body>
 </html>

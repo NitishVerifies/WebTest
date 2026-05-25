@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Protocols</title>
+  <title>Protocols — Nitish Agrawal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../shared.css" />
+  <link rel="stylesheet" href="../_shared.css" />
 </head>
 <body class="protocols">
 
@@ -53,7 +53,7 @@
   ===================================================== -->
   <div class="notes-grid">
 
-    <a class="note-card" href="../protocols/axi/axi-protocol.html">
+    <a class="note-card" href="axi-protocol.html">
       <div class="card-top">
         <span class="card-badge badge-protocols">AXI</span>
         <span class="card-date">Add date</span>
@@ -70,7 +70,7 @@
       <span class="card-link">Read notes →</span>
     </a>
 
-    <a class="note-card" href="../protocols/ahb/ahb-protocol.html">
+    <a class="note-card" href="ahb-protocol.html">
       <div class="card-top">
         <span class="card-badge badge-protocols">AHB</span>
         <span class="card-date">Add date</span>
@@ -79,6 +79,23 @@
       <p class="card-summary">
         Shared pipelined bus with master/slave arbitration. HTRANS types
         (IDLE/BUSY/NONSEQ/SEQ), HREADY wait states, HRESP error response,
+        burst types, and multi-master arbitration via HBUSREQ/HGRANT.
+      </p>
+      <div class="card-tags">
+        <span>HREADY</span><span>HTRANS</span><span>Arbitration</span><span>Pipelined</span>
+      </div>
+      <span class="card-link">Read notes →</span>
+    </a>
+
+    <a class="note-card" href="ahb-protocol.html">
+      <div class="card-top">
+        <span class="card-badge badge-protocols">AHB</span>
+        <span class="card-date">Add date</span>
+      </div>
+      <h3 class="card-title">AMBA AHB Protocol</h3>
+      <p class="card-summary">
+        Shared pipelined bus with master/slave arbitration. HTRANS types
+        (IDLE/BUSY/NONSEQ/SEQ), HREADY wait states, HRESP 2-cycle error,
         burst types, and multi-master arbitration via HBUSREQ/HGRANT.
       </p>
       <div class="card-tags">
@@ -98,5 +115,26 @@
   <span id="yr"></span>
 </footer>
 <script>document.getElementById('yr').textContent = '© ' + new Date().getFullYear();</script>
+
+  <script>
+  // Mobile hamburger
+  (function() {
+    var btn = document.getElementById('navHamburger');
+    var drawer = document.getElementById('navDrawer');
+    if (!btn || !drawer) return;
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      drawer.classList.toggle('open');
+    });
+    drawer.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() { drawer.classList.remove('open'); });
+    });
+    document.addEventListener('click', function(e) {
+      if (!btn.contains(e.target) && !drawer.contains(e.target)) {
+        drawer.classList.remove('open');
+      }
+    });
+  })();
+  </script>
 </body>
 </html>

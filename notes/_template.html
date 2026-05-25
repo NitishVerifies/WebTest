@@ -173,5 +173,26 @@ Cycle 2: ...</code></pre>
   <span id="yr"></span>
 </footer>
 <script>document.getElementById('yr').textContent = '© ' + new Date().getFullYear();</script>
+
+  <script>
+  // Mobile hamburger
+  (function() {
+    var btn = document.getElementById('navHamburger');
+    var drawer = document.getElementById('navDrawer');
+    if (!btn || !drawer) return;
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      drawer.classList.toggle('open');
+    });
+    drawer.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() { drawer.classList.remove('open'); });
+    });
+    document.addEventListener('click', function(e) {
+      if (!btn.contains(e.target) && !drawer.contains(e.target)) {
+        drawer.classList.remove('open');
+      }
+    });
+  })();
+  </script>
 </body>
 </html>
