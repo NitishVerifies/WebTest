@@ -1,0 +1,338 @@
+/* ============================================================
+   _shared.css  —  used by EVERY hub page and note page
+   Location: notes/_shared.css
+   Referenced as: href="../_shared.css"   (from notes/protocols/)
+                  href="../_shared.css"   (from notes/systemverilog/)
+   ============================================================ */
+
+/* ── DESIGN TOKENS (same as main site) ── */
+:root {
+  --bg:         #080c10;
+  --surface:    #111820;
+  --surface2:   #162030;
+  --border:     #1e2d3d;
+  --border2:    #243040;
+  --accent:     #00e5ff;
+  --accent2:    #ff6b2b;
+  --accent3:    #39ff14;
+  --text:       #d0e4f0;
+  --text-muted: #6a8aaa;
+  --text-dim:   #354555;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+  --font-body:    'DM Sans', sans-serif;
+  --radius: 10px;
+  --tr: 0.22s cubic-bezier(.4,0,.2,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+/* ── NAV ─────────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem 3rem;
+  background: rgba(8,12,16,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+/* avatar (logo) */
+.nav-logo { margin-right: auto; }
+.nav-avatar-link { display: flex; align-items: center; text-decoration: none; }
+.nav-avatar-img {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;
+  border: 2px solid var(--accent);
+  transition: box-shadow var(--tr), transform var(--tr);
+}
+.nav-avatar-img:hover { box-shadow: 0 0 0 3px rgba(0,229,255,0.25); transform: scale(1.05); }
+/* links */
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-link {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  transition: color var(--tr);
+  position: relative;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0; right: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform var(--tr);
+}
+.nav-link:hover, .nav-link.active { color: var(--accent); }
+.nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
+/* resume button */
+.nav-resume {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 0.45rem 1rem;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all var(--tr);
+}
+.nav-resume:hover { background: var(--accent); color: var(--bg); }
+
+/* ── BREADCRUMB ──────────────────────────────────────────── */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+}
+.breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color var(--tr); }
+.breadcrumb a:hover { color: var(--accent); }
+.breadcrumb .sep { color: var(--text-dim); }
+.breadcrumb .current { color: var(--text-muted); }
+
+/* ── HUB PAGE (folder index) ─────────────────────────────── */
+.hub-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 8rem 2rem 5rem;
+}
+
+.hub-header {
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+.hub-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.hub-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  margin-bottom: 0.6rem;
+}
+.hub-title em { font-style: normal; }
+.hub-desc {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  max-width: 580px;
+  line-height: 1.75;
+}
+
+/* Note cards grid (inside hub) */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.2rem;
+}
+
+.note-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.4rem;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--tr), transform var(--tr), box-shadow var(--tr);
+}
+.note-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.note-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.35);
+}
+.note-card:hover::before { transform: scaleX(1); }
+
+/* Each folder can set its own accent for ::before */
+.protocols  .note-card::before { background: linear-gradient(90deg, var(--accent2), var(--accent)); }
+.sv         .note-card::before { background: linear-gradient(90deg, var(--accent3), var(--accent)); }
+.uvm        .note-card::before { background: linear-gradient(90deg, var(--accent),  var(--accent2)); }
+.concepts   .note-card::before { background: linear-gradient(90deg, #fbbf24, var(--accent2)); }
+.behavioral .note-card::before { background: linear-gradient(90deg, #c084fc, var(--accent2)); }
+
+.card-top { display: flex; justify-content: space-between; align-items: center; }
+
+.card-badge {
+  font-family: var(--font-mono);
+  font-size: 0.67rem;
+  padding: 0.18rem 0.65rem;
+  border-radius: 4px;
+}
+/* Colours set per-folder via a class on <body> or inline style */
+.badge-protocols { background: rgba(255,107,43,0.1); color: var(--accent2); border: 1px solid rgba(255,107,43,0.25); }
+.badge-sv        { background: rgba(57,255,20,0.08); color: var(--accent3); border: 1px solid rgba(57,255,20,0.22); }
+.badge-uvm       { background: rgba(0,229,255,0.08); color: var(--accent);  border: 1px solid rgba(0,229,255,0.22); }
+.badge-concepts  { background: rgba(251,191,36,0.08);color: #fbbf24;        border: 1px solid rgba(251,191,36,0.22); }
+.badge-behavioral{ background: rgba(192,132,252,0.08);color:#c084fc;        border: 1px solid rgba(192,132,252,0.22); }
+
+.card-date { font-family: var(--font-mono); font-size: 0.67rem; color: var(--text-dim); }
+.card-title { font-family: var(--font-body); font-size: 0.97rem; font-weight: 500; line-height: 1.3; color: var(--text); }
+.card-summary { font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; flex: 1; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.card-tags span { font-family: var(--font-mono); font-size: 0.66rem; padding: 0.14rem 0.5rem; background: var(--surface2); border-radius: 4px; color: var(--text-dim); }
+.card-link {
+  font-family: var(--font-mono);
+  font-size: 0.77rem;
+  color: var(--accent2);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: gap var(--tr), color var(--tr);
+  align-self: flex-start;
+}
+.note-card:hover .card-link { color: var(--accent); gap: 0.6rem; }
+
+.hub-cta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-top: 2rem;
+  text-align: center;
+}
+
+/* ── NOTE PAGE (individual note) ─────────────────────────── */
+.note-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 8rem 2rem 5rem;
+}
+
+.note-header {
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+.note-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.22rem 0.75rem;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+.note-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  margin-bottom: 0.75rem;
+}
+.note-meta {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* ── NOTE BODY CONTENT ───────────────────────────────────── */
+.note-body { display: flex; flex-direction: column; }
+
+.note-body h2 {
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  letter-spacing: 0.04em;
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+.note-body h3 { font-size: 1rem; font-weight: 500; color: var(--text); margin: 1.8rem 0 0.6rem; }
+.note-body p  { font-size: 0.92rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.8; }
+
+.note-body ul, .note-body ol { margin: 0 0 1.2rem 1.4rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.note-body li { font-size: 0.91rem; color: var(--text-muted); line-height: 1.7; }
+.note-body strong { color: var(--text); font-weight: 500; }
+.note-body em { font-style: normal; }
+
+.note-body pre {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 1.3rem;
+  overflow-x: auto;
+  margin: 1rem 0 1.5rem;
+}
+.note-body code { font-family: var(--font-mono); font-size: 0.83rem; line-height: 1.6; color: var(--text); }
+.note-body p code, .note-body li code {
+  background: var(--surface2);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.81rem;
+  color: var(--accent);
+  border: 1px solid var(--border);
+}
+
+/* Callout boxes */
+.callout      { border-left: 3px solid var(--accent);  background: rgba(0,229,255,0.04); padding: 1rem 1.4rem; border-radius: 0 var(--radius) var(--radius) 0; margin: 1.2rem 0; }
+.callout.warn { border-color: var(--accent2); background: rgba(255,107,43,0.04); }
+.callout.tip  { border-color: var(--accent3); background: rgba(57,255,20,0.04);  }
+.callout p { margin: 0; font-size: 0.87rem; }
+
+/* Table */
+.note-body table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.81rem; margin: 1rem 0 1.5rem; }
+.note-body th { background: var(--surface2); padding: 0.6rem 0.9rem; text-align: left; border: 1px solid var(--border2); font-weight: 500; }
+.note-body td { padding: 0.55rem 0.9rem; border: 1px solid var(--border); color: var(--text-muted); vertical-align: top; }
+.note-body tr:hover td { background: var(--surface); }
+
+hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 1.5rem 2.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .hub-page, .note-page { padding: 7rem 1.2rem 4rem; }
+  .notes-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AMBA AHB Protocol — Nitish Agrawal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared.css" />
+  <style>
+    .note-eyebrow { background: rgba(255,107,43,0.1); color: var(--accent2); border: 1px solid rgba(255,107,43,0.25); }
+    .note-body h2 { color: var(--accent2); }
+    .note-body pre { border-left: 3px solid var(--accent2); }
+  </style>
+</head>
+<body class="protocols">
+
+<nav>
+  <div class="nav-logo">
+    <a href="../../index.html" class="nav-avatar-link">
+      <img src="../../profile.jpg" alt="Nitish" class="nav-avatar-img" />
+    </a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="../../index.html#profile"    class="nav-link">Profile</a></li>
+    <li><a href="../../index.html#experience" class="nav-link">Experience</a></li>
+    <li><a href="../../index.html#projects"   class="nav-link">Projects</a></li>
+    <li><a href="../../index.html#notes"      class="nav-link active">Notes</a></li>
+    <li><a href="../../index.html#contact"    class="nav-link">Contact</a></li>
+  </ul>
+  <a href="../../resume.pdf" class="nav-resume" target="_blank">Resume ↗</a>
+</nav>
+
+<main class="note-page">
+
+  <div class="breadcrumb">
+    <a href="../../index.html">Home</a>
+    <span class="sep">/</span>
+    <a href="../../index.html#notes">Notes</a>
+    <span class="sep">/</span>
+    <a href="index.html">Protocols</a>
+    <span class="sep">/</span>
+    <span class="current">AHB Protocol</span>
+  </div>
+
+  <header class="note-header">
+    <span class="note-eyebrow">Protocols · AHB</span>
+    <h1 class="note-title">AMBA AHB Protocol</h1>
+    <div class="note-meta">
+      <span>📅 Add date</span>
+      <span>⏱ 12 min read</span>
+      <span>🏷 HREADY · HTRANS · Arbitration · Pipelined</span>
+    </div>
+  </header>
+
+  <article class="note-body">
+
+    <h2>What is AHB?</h2>
+    <p>
+      AHB (Advanced High-performance Bus) is part of the ARM AMBA bus family, designed for
+      moderate-performance on-chip communication. Unlike AXI4 which has independent
+      point-to-point channels, AHB is a <strong>shared bus</strong> — all masters and slaves share
+      the same address and data lines, with an arbiter controlling who gets bus access at any time.
+    </p>
+
+    <div class="callout">
+      <p>💡 <strong>Key difference from AXI:</strong> AHB has one address bus and one data bus shared
+      by all components. AXI4 gives each master-slave pair independent channels. AHB is simpler and
+      lower power; AXI4 is higher throughput.</p>
+    </div>
+
+    <h2>AHB vs AXI4 — Quick Comparison</h2>
+    <table>
+      <tr><th>Feature</th><th>AHB</th><th>AXI4</th></tr>
+      <tr><td>Bus topology</td><td>Single shared bus</td><td>Point-to-point channels</td></tr>
+      <tr><td>Channels</td><td>1 address + 1 data bus</td><td>5 independent channels</td></tr>
+      <tr><td>Simultaneous read &amp; write</td><td>❌ One at a time</td><td>✅ Parallel</td></tr>
+      <tr><td>Out-of-order responses</td><td>❌ In-order only</td><td>✅ Via ID tags</td></tr>
+      <tr><td>Multiple masters</td><td>Via arbiter (one at a time)</td><td>Via interconnect (parallel)</td></tr>
+      <tr><td>Complexity</td><td>Lower — easier to verify</td><td>Higher</td></tr>
+      <tr><td>Typical use</td><td>Peripheral subsystems, low-power IPs</td><td>DDR memory, DMA, high-perf</td></tr>
+    </table>
+
+    <h2>Key Signals</h2>
+    <table>
+      <tr><th>Signal</th><th>Direction</th><th>Description</th></tr>
+      <tr><td><code>HCLK</code></td><td>Global</td><td>Bus clock — all signals sampled on rising edge</td></tr>
+      <tr><td><code>HRESETn</code></td><td>Global</td><td>Active-low synchronous reset</td></tr>
+      <tr><td><code>HADDR[31:0]</code></td><td>Master → Slave</td><td>32-bit transfer address</td></tr>
+      <tr><td><code>HTRANS[1:0]</code></td><td>Master → Slave</td><td>Transfer type: IDLE / BUSY / NONSEQ / SEQ</td></tr>
+      <tr><td><code>HWRITE</code></td><td>Master → Slave</td><td>1 = Write, 0 = Read</td></tr>
+      <tr><td><code>HSIZE[2:0]</code></td><td>Master → Slave</td><td>Transfer size: byte / halfword / word</td></tr>
+      <tr><td><code>HBURST[2:0]</code></td><td>Master → Slave</td><td>Burst type: SINGLE / INCR / WRAP4 / INCR4 ...</td></tr>
+      <tr><td><code>HPROT[3:0]</code></td><td>Master → Slave</td><td>Protection: privileged, bufferable, cacheable</td></tr>
+      <tr><td><code>HWDATA[31:0]</code></td><td>Master → Slave</td><td>Write data — driven one cycle after address phase</td></tr>
+      <tr><td><code>HRDATA[31:0]</code></td><td>Slave → Master</td><td>Read data returned by slave</td></tr>
+      <tr><td><code>HREADY</code></td><td>Slave → Master</td><td>1 = transfer accepted, 0 = insert wait state</td></tr>
+      <tr><td><code>HRESP[1:0]</code></td><td>Slave → Master</td><td>Transfer response: OKAY or ERROR</td></tr>
+      <tr><td><code>HSEL</code></td><td>Decoder → Slave</td><td>Selects this specific slave for the current transfer</td></tr>
+    </table>
+
+    <h2>HTRANS — Transfer Types</h2>
+    <p>The master uses <code>HTRANS</code> to tell the bus what kind of transfer is happening each cycle.</p>
+    <table>
+      <tr><th>Value</th><th>Name</th><th>Meaning</th></tr>
+      <tr><td><code>2'b00</code></td><td><strong>IDLE</strong></td><td>No transfer requested. Master is not using the bus.</td></tr>
+      <tr><td><code>2'b01</code></td><td><strong>BUSY</strong></td><td>Master owns the bus but needs a gap mid-burst (not ready for next beat yet).</td></tr>
+      <tr><td><code>2'b10</code></td><td><strong>NONSEQ</strong></td><td>First beat of a burst, OR a single (non-burst) transfer.</td></tr>
+      <tr><td><code>2'b11</code></td><td><strong>SEQ</strong></td><td>Subsequent beats of a burst — address is sequential from previous.</td></tr>
+    </table>
+
+    <div class="callout tip">
+      <p>✅ <strong>Memory tip:</strong> Think of it as — IDLE = doing nothing, NONSEQ = starting something new,
+      SEQ = continuing what was started, BUSY = pause mid-burst.</p>
+    </div>
+
+    <h2>Pipelined Transfer — Address &amp; Data Phases</h2>
+    <p>
+      AHB is <strong>pipelined</strong>: the address phase of transfer N+1 overlaps with the data phase
+      of transfer N. This means the address and data of the <em>same</em> transfer appear on the bus
+      in <em>different cycles</em>.
+    </p>
+    <pre><code>          | Cycle 1        | Cycle 2        | Cycle 3
+----------+----------------+----------------+----------------
+HADDR     | 0x1000 (T1)    | 0x1004 (T2)    | 0x1008 (T3)
+HTRANS    | NONSEQ         | SEQ            | SEQ
+HWDATA    | --- (no data)  | 0xDEAD (T1)    | 0xBEEF (T2)
+HREADY    | 1              | 1              | 1</code></pre>
+
+    <div class="callout warn">
+      <p>⚠️ <strong>Monitor trap:</strong> Because of pipelining, you cannot capture address and data
+      in the same cycle. Your monitor must <strong>register the address</strong> in cycle N and capture
+      the data in cycle N+1 (when HREADY=1).</p>
+    </div>
+
+    <h2>Wait States — HREADY</h2>
+    <p>
+      A slave inserts wait states by holding <code>HREADY = 0</code>. The master must hold
+      its address and control signals <strong>stable</strong> until <code>HREADY = 1</code>.
+    </p>
+    <pre><code>          | Cycle 1      | Cycle 2      | Cycle 3      | Cycle 4
+----------+--------------+--------------+--------------+--------------
+HADDR     | 0x1000       | 0x1000 held  | 0x1000 held  | 0x1004
+HTRANS    | NONSEQ       | NONSEQ held  | NONSEQ held  | SEQ
+HREADY    | 0 (wait)     | 0 (wait)     | 1 (accept)   | 1
+          |        2 wait states inserted by slave</code></pre>
+
+    <h2>Burst Types (HBURST)</h2>
+    <table>
+      <tr><th>Value</th><th>Name</th><th>Beats</th><th>Description</th></tr>
+      <tr><td><code>3'b000</code></td><td>SINGLE</td><td>1</td><td>Single transfer, no burst</td></tr>
+      <tr><td><code>3'b001</code></td><td>INCR</td><td>Undefined</td><td>Incrementing burst of unspecified length</td></tr>
+      <tr><td><code>3'b010</code></td><td>WRAP4</td><td>4</td><td>4-beat wrapping burst</td></tr>
+      <tr><td><code>3'b011</code></td><td>INCR4</td><td>4</td><td>4-beat incrementing burst</td></tr>
+      <tr><td><code>3'b100</code></td><td>WRAP8</td><td>8</td><td>8-beat wrapping burst</td></tr>
+      <tr><td><code>3'b101</code></td><td>INCR8</td><td>8</td><td>8-beat incrementing burst</td></tr>
+      <tr><td><code>3'b110</code></td><td>WRAP16</td><td>16</td><td>16-beat wrapping burst</td></tr>
+      <tr><td><code>3'b111</code></td><td>INCR16</td><td>16</td><td>16-beat incrementing burst</td></tr>
+    </table>
+
+    <h2>HRESP — Slave Response</h2>
+    <table>
+      <tr><th>Value</th><th>Name</th><th>Meaning</th></tr>
+      <tr><td><code>2'b00</code></td><td>OKAY</td><td>Transfer successful</td></tr>
+      <tr><td><code>2'b01</code></td><td>ERROR</td><td>Transfer failed — slave must drive this for 2 cycles</td></tr>
+    </table>
+
+    <div class="callout warn">
+      <p>⚠️ <strong>ERROR response is 2 cycles:</strong> When a slave signals ERROR, it drives
+      <code>HREADY=0</code> in the first cycle and <code>HREADY=1</code> in the second. This gives
+      the master one extra cycle to see the error and optionally abort the burst.</p>
+    </div>
+
+    <h2>Full Write Transaction — Step by Step</h2>
+    <pre><code>Cycle 1 -- ADDRESS PHASE
+  HADDR  = 0x4000_0000   (target address)
+  HTRANS = NONSEQ        (start of new transfer)
+  HWRITE = 1             (write direction)
+  HSIZE  = 3'b010        (word = 32-bit)
+  HBURST = SINGLE
+  HSEL   = 1             (decoder selected this slave)
+  HREADY = 1             (slave ready, no wait states)
+
+Cycle 2 -- DATA PHASE
+  HWDATA = 0xDEAD_BEEF   (write data now driven)
+  HTRANS = IDLE          (no next transfer)
+  HREADY = 1             (slave accepted the data)
+  HRESP  = OKAY</code></pre>
+
+    <h2>Multi-Master Arbitration</h2>
+    <p>When multiple masters want the bus simultaneously, an <strong>arbiter</strong> grants access
+    to one at a time using request and grant signals.</p>
+    <pre><code>Per master:
+  HBUSREQx  -- Master x requests bus ownership
+  HLOCKx    -- Master x wants a locked (atomic) sequence
+  HGRANTx   -- Arbiter grants bus to master x
+
+Master gains bus ownership when:
+  HGRANTx == 1  AND  HREADY == 1  on posedge HCLK</code></pre>
+
+    <div class="callout">
+      <p>💡 <strong>Why no arbiter in AXI4?</strong> AXI4 uses a crossbar interconnect — each master
+      has its own dedicated channels, so multiple masters transfer simultaneously without competing
+      for a shared bus.</p>
+    </div>
+
+    <hr />
+
+    <h2>Verification Checklist</h2>
+    <ul>
+      <li>Verify HWDATA is stable exactly one cycle after the address phase (pipelining check)</li>
+      <li>Test all HTRANS transitions: IDLE→NONSEQ, NONSEQ→SEQ, SEQ→BUSY→SEQ, SEQ→IDLE</li>
+      <li>Test wait state insertion: HREADY=0 for 1, 2, and many cycles; verify master holds signals stable</li>
+      <li>Test ERROR response: verify slave drives 2-cycle error and master correctly sees HRESP=ERROR</li>
+      <li>Test all burst types: SINGLE, INCR, INCR4, WRAP4, INCR8, WRAP8, INCR16, WRAP16</li>
+      <li>Test back-to-back transfers with no IDLE gap between them</li>
+      <li>For multi-master: verify arbitration priority, verify HLOCK prevents preemption mid-burst</li>
+      <li>Verify HSEL is asserted only for the correct slave address range (decoder logic)</li>
+    </ul>
+
+    <h2>Interview Questions</h2>
+    <ul>
+      <li>What is the purpose of HREADY? Who drives it?</li>
+      <li>Why is AHB pipelined? What does that mean for a verification monitor?</li>
+      <li>How many cycles does an ERROR response take in AHB? Why two cycles?</li>
+      <li>What is the difference between NONSEQ and SEQ in HTRANS?</li>
+      <li>In which cycle is HWDATA driven relative to HADDR for the same transfer?</li>
+      <li>What does HLOCK do? Give a practical use case.</li>
+      <li>Why does AHB need an arbiter but AXI4 does not?</li>
+      <li>What happens if a master drives HTRANS=BUSY mid-burst?</li>
+      <li>Compare WRAP burst behaviour in AHB vs AXI4.</li>
+      <li>How does HSEL get asserted? Who drives it and based on what?</li>
+    </ul>
+
+  </article>
+</main>
+
+<footer>
+  <span>Nitish Agrawal · Design Verification Engineer</span>
+  <span id="yr"></span>
+</footer>
+<script>document.getElementById('yr').textContent = '© ' + new Date().getFullYear();</script>
+</body>
+</html>

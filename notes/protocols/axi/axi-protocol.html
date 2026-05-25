@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AMBA AXI Protocol — Nitish Agrawal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared.css" />
+  <style>
+    /* AXI accent overrides */
+    .note-eyebrow { background: rgba(255,107,43,0.1); color: var(--accent2); border: 1px solid rgba(255,107,43,0.25); }
+    .note-body h2 { color: var(--accent2); }
+    .note-body pre { border-left: 3px solid var(--accent2); }
+  </style>
+</head>
+<body class="protocols">
+
+<nav>
+  <div class="nav-logo">
+    <a href="../../index.html" class="nav-avatar-link">
+      <img src="../../profile.jpg" alt="Nitish" class="nav-avatar-img" />
+    </a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="../../index.html#profile"    class="nav-link">Profile</a></li>
+    <li><a href="../../index.html#experience" class="nav-link">Experience</a></li>
+    <li><a href="../../index.html#projects"   class="nav-link">Projects</a></li>
+    <li><a href="../../index.html#notes"      class="nav-link active">Notes</a></li>
+    <li><a href="../../index.html#contact"    class="nav-link">Contact</a></li>
+  </ul>
+  <a href="../../resume.pdf" class="nav-resume" target="_blank">Resume ↗</a>
+</nav>
+
+<main class="note-page">
+
+  <!-- Breadcrumb: Home / Notes / Protocols / AXI -->
+  <div class="breadcrumb">
+    <a href="../../index.html">Home</a>
+    <span class="sep">/</span>
+    <a href="../../index.html#notes">Notes</a>
+    <span class="sep">/</span>
+    <a href="index.html">Protocols</a>
+    <span class="sep">/</span>
+    <span class="current">AXI Protocol</span>
+  </div>
+
+  <header class="note-header">
+    <span class="note-eyebrow">Protocols · AXI</span>
+    <h1 class="note-title">AMBA AXI Protocol</h1>
+    <div class="note-meta">
+      <span>📅 Add date</span>
+      <span>⏱ 15 min read</span>
+      <span>🏷 VALID/READY · 5-Channel · Burst · SLVERR</span>
+    </div>
+  </header>
+
+  <article class="note-body">
+
+    <h2>What is AXI?</h2>
+    <p>
+      AXI (Advanced eXtensible Interface) is part of the ARM AMBA bus family.
+      AXI4 is the high-performance variant — designed for high-bandwidth, high-frequency
+      on-chip communication between masters (CPU, DMA) and slaves (memory, peripherals).
+      Key advantage over AHB: <strong>independent channels</strong> allow parallel read and write,
+      and out-of-order responses via ID tags.
+    </p>
+
+    <div class="callout">
+      <p>💡 <strong>Core idea:</strong> AXI separates address and data into independent channels with
+      their own handshake, allowing pipelined and out-of-order transactions — unlike AHB's shared bus.</p>
+    </div>
+
+    <h2>The 5 Channels</h2>
+    <p>Every AXI transfer uses some combination of these 5 independent channels. Each has its own VALID/READY handshake.</p>
+    <table>
+      <tr><th>Channel</th><th>Key Signals</th><th>Direction</th><th>Purpose</th></tr>
+      <tr><td><strong>AW</strong> — Write Address</td><td>AWADDR, AWLEN, AWSIZE, AWBURST, AWID</td><td>Master → Slave</td><td>Send write address + burst info</td></tr>
+      <tr><td><strong>W</strong> — Write Data</td><td>WDATA, WSTRB, WLAST</td><td>Master → Slave</td><td>Send write data beats</td></tr>
+      <tr><td><strong>B</strong> — Write Response</td><td>BRESP, BID</td><td>Slave → Master</td><td>Confirm write done / report error</td></tr>
+      <tr><td><strong>AR</strong> — Read Address</td><td>ARADDR, ARLEN, ARSIZE, ARBURST, ARID</td><td>Master → Slave</td><td>Send read address + burst info</td></tr>
+      <tr><td><strong>R</strong> — Read Data</td><td>RDATA, RRESP, RLAST, RID</td><td>Slave → Master</td><td>Return read data beats</td></tr>
+    </table>
+
+    <h2>VALID / READY Handshake</h2>
+    <p>A transfer completes on a channel <strong>only when both VALID and READY are HIGH on the same rising clock edge.</strong></p>
+    <pre><code>Rule 1: Sender drives VALID when its data is ready to transfer
+Rule 2: Receiver drives READY when it can accept
+Rule 3: Transfer = VALID & READY == 1 on posedge clk
+Rule 4: Master CANNOT deassert VALID once asserted (until handshake done)
+Rule 5: Slave CAN deassert READY at any time (back-pressure)</code></pre>
+
+    <div class="callout warn">
+      <p>⚠️ <strong>Deadlock trap:</strong> Never make VALID dependent on READY. If master waits for
+      READY before asserting VALID, and slave waits for VALID before asserting READY — neither fires.
+      VALID must be driven independently.</p>
+    </div>
+
+    <h2>Burst Types (AWBURST / ARBURST)</h2>
+    <table>
+      <tr><th>Value</th><th>Name</th><th>Address per beat</th><th>Use case</th></tr>
+      <tr><td><code>2'b00</code></td><td>FIXED</td><td>Same address every beat</td><td>FIFO / streaming to one register</td></tr>
+      <tr><td><code>2'b01</code></td><td>INCR</td><td>Increments by transfer size</td><td>Normal memory read/write</td></tr>
+      <tr><td><code>2'b10</code></td><td>WRAP</td><td>Increments, wraps at boundary</td><td>Cache line fills</td></tr>
+    </table>
+    <p>Burst length = <code>ARLEN + 1</code>. So <code>ARLEN=0</code> → 1 beat; <code>ARLEN=7</code> → 8 beats.</p>
+
+    <h2>Response Codes (BRESP / RRESP)</h2>
+    <table>
+      <tr><th>Code</th><th>Name</th><th>Meaning</th></tr>
+      <tr><td><code>2'b00</code></td><td>OKAY</td><td>Normal successful transfer</td></tr>
+      <tr><td><code>2'b01</code></td><td>EXOKAY</td><td>Exclusive access successful</td></tr>
+      <tr><td><code>2'b10</code></td><td>SLVERR</td><td>Slave error — transfer failed at slave</td></tr>
+      <tr><td><code>2'b11</code></td><td>DECERR</td><td>Decode error — address not mapped to any slave</td></tr>
+    </table>
+
+    <h2>AXI4 vs AXI4-Lite vs AXI4-Stream</h2>
+    <table>
+      <tr><th>Feature</th><th>AXI4</th><th>AXI4-Lite</th><th>AXI4-Stream</th></tr>
+      <tr><td>Burst support</td><td>✅ Up to 256 beats</td><td>❌ Single transfer only</td><td>N/A (continuous)</td></tr>
+      <tr><td>Out-of-order</td><td>✅ Via ID tags</td><td>❌</td><td>❌</td></tr>
+      <tr><td>Address channels</td><td>✅ AW + AR</td><td>✅ AW + AR</td><td>❌ No address</td></tr>
+      <tr><td>Typical use</td><td>DDR / high-perf memory</td><td>Register maps (CSRs)</td><td>Video / data pipeline</td></tr>
+    </table>
+
+    <div class="callout tip">
+      <p>✅ <strong>Rule of thumb:</strong> Use AXI4-Lite for register access (like camera CSRs at Qualcomm).
+      Use full AXI4 for DDR or DMA transfers. Use AXI4-Stream for pixel pipelines.</p>
+    </div>
+
+    <h2>Write Transaction — Cycle by Cycle</h2>
+    <pre><code>Cycle 1 | AW: AWADDR=0x1000, AWLEN=1, AWBURST=INCR, AWVALID=1
+        |      Slave: AWREADY=1  →  Address handshake done
+
+Cycle 2 | W:  WDATA=0xDEAD, WSTRB=0xFF, WLAST=0, WVALID=1
+        |      Slave: WREADY=1   →  Beat 1 done
+
+Cycle 3 | W:  WDATA=0xBEEF, WLAST=1, WVALID=1
+        |      Slave: WREADY=1   →  Beat 2 done (last)
+
+Cycle 4 | B:  Slave drives BRESP=OKAY, BVALID=1
+        |      Master: BREADY=1  →  Response handshake done</code></pre>
+
+    <h2>Outstanding Transactions &amp; IDs</h2>
+    <p>AXI4 allows multiple in-flight transactions using <strong>ID tags</strong>. Responses must
+    return in-order <em>per ID</em>, but can be out-of-order across different IDs.</p>
+    <pre><code>// Two reads in-flight simultaneously
+Cycle 1: AR — ARID=0, ARADDR=0x1000
+Cycle 2: AR — ARID=1, ARADDR=0x2000
+
+// RID=1 can return before RID=0 — valid in AXI4!
+// Within the same ID, order is preserved.</code></pre>
+
+    <hr />
+
+    <h2>Verification Checklist</h2>
+    <ul>
+      <li>Cover all 3 burst types (FIXED, INCR, WRAP) in covergroups</li>
+      <li>Test SLVERR by accessing an unmapped address region</li>
+      <li>Test back-pressure: slave holds WREADY / RREADY low for N cycles</li>
+      <li>Test narrow transfers: WSTRB with only some byte lanes active</li>
+      <li>Verify WLAST aligns with AWLEN — mismatch is a common RTL bug</li>
+      <li>Test maximum burst length (ARLEN=255) and minimum (ARLEN=0)</li>
+      <li>Test out-of-order responses with multiple simultaneous IDs</li>
+    </ul>
+
+    <h2>Interview Questions</h2>
+    <ul>
+      <li>What is the difference between AXI4 and AXI4-Lite?</li>
+      <li>Can a master deassert VALID after asserting it? Can a slave deassert READY?</li>
+      <li>What does WLAST indicate? What happens if it mismatches AWLEN?</li>
+      <li>How does AXI4 handle out-of-order responses?</li>
+      <li>What is WSTRB? How many bits wide is it for a 32-bit data bus?</li>
+      <li>Explain a WRAP burst: ARLEN=3, ARSIZE=2 (word), ARADDR=0x10.</li>
+      <li>What is the difference between SLVERR and DECERR?</li>
+      <li>Why does AXI4 have separate AW and AR channels instead of one address channel?</li>
+    </ul>
+
+  </article>
+</main>
+
+<footer>
+  <span>Nitish Agrawal · Design Verification Engineer</span>
+  <span id="yr"></span>
+</footer>
+<script>document.getElementById('yr').textContent = '© ' + new Date().getFullYear();</script>
+</body>
+</html>

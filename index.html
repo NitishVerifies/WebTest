@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nitish Agrawal — Design Verification Engineer</title>
+  <link rel="stylesheet" href="style_new.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <canvas id="circuitCanvas"></canvas>
+
+  <nav id="mainNav">
+    <div class="nav-logo">
+      <a href="#profile" class="nav-avatar-link">
+        <img src="profile.jpg" alt="Nitish Agrawal" class="nav-avatar-img" />
+      </a>
+    </div>
+
+    <!-- Desktop links (hidden on mobile) -->
+    <ul class="nav-links">
+      <li><a href="#profile"    class="nav-link">Profile</a></li>
+      <li><a href="#experience" class="nav-link">Experience</a></li>
+      <li><a href="#education"  class="nav-link">Education</a></li>
+      <li><a href="#projects"  class="nav-link">Projects</a></li>
+      <li><a href="#notes"      class="nav-link">Notes</a></li>
+     <!-- <li><a href="#contact"     class="nav-link">Contact</a></li>-->
+    </ul>
+
+    <!-- Resume — visible on desktop -->
+    <a href="resume.pdf" class="nav-resume" target="_blank">Resume ↗</a>
+
+      <!-- Hamburger — visible on mobile only -->
+    <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+   <!-- Mobile drawer (slides down when hamburger tapped) -->
+  <div class="nav-drawer" id="navDrawer">
+    <ul>
+      <li><a href="#profile">Profile</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#notes">Notes</a></li>
+      <li><a href="resume.pdf" target="_blank" class="drawer-resume">Resume ↗</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+<section id="profile" class="section hero-section">
+
+  <div class="hero-grid">
+
+    <!-- LEFT SIDE -->
+    <div class="hero-left">
+
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Ready for New Challenges
+      </div>
+
+      <h1 class="accent-line hero-name single-line">
+        Nitish <span >Agrawal</span>
+      </h1>
+
+       <div class="stat-row">
+          <div class="stat-item"><span class="stat-num">2+</span><span class="stat-label">Years Exp.</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat-item"><span class="stat-num">Design Verification Engineer</span><span class="stat-label">Qualcomm veteran</span></div>
+          <div class="stat-divider"></div>
+          <div class="stat-item"><span class="stat-num">MTech. in VLSI Design</span><span class="stat-label">IIT Delhi</span></div>
+        </div>
+
+      <div class="hero-bio">
+      <ul>
+        <li>Industry experience in camera design verification at block and SoC levels. </li>
+        <li>Led the prompt training initiative of the LLM agent targeted to automate the task of writing verification test sequences to reduce project time to market.</li>
+        <li>Completed my masters in VLSI Design with exposure to digital system design and verification and computer architecture.</li>
+        <li>Interested in complex IP designing and verification using reusable UVM-based verification architectures, protocol compliance, coverage-driven methodologies, and building scalable SoC verification flows.</li>
+      </ul>
+    </div>
+      
+      <div class="hero-links">
+          <a href="mailto:nitishagrawal35@gmail.com"       class="btn btn-ghost">Get in Touch</a>
+          <a href="https://linkedin.com/in/nitish-agrawal" class="btn btn-ghost" target="_blank">LinkedIn ↗</a>
+          <a href="https://github.com/nitish-agrawal"      class="btn btn-ghost" target="_blank">GitHub ↗</a>
+          <a href="tel:+917999466545" class="btn btn-ghost" target="_blank">📞 +91-7999466545</a>
+        </div> 
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="hero-right">
+      <!-- SKILLS -->
+      <div class="hero-right">
+        <div class="tech-card">
+          <div class="tc-header">
+            <span class="tc-dot red"></span>
+            <span class="tc-dot yellow"></span>
+            <span class="tc-dot green"></span>
+            <span class="tc-title">SkillSet</span>
+          </div>
+          <div class="tc-body">
+            <!-- Verification Methodology -->
+            <div class="tc-section">
+              <span class="tc-key">// Verification Methodology</span>
+              <div class="tc-vals">
+                <span>UVM</span>
+                <span>Test Plan Development</span>
+                <span>Constrained Random Verification</span>
+                <span>SV Assertions</span>
+                <span>Functional Coverage</span>
+              </div>
+            </div>
+            <!-- Protocols -->
+            <div class="tc-section">
+              <span class="tc-key">// Protocols</span>
+              <div class="tc-vals"><span>AXI</span><span>APB</span><span>AHB</span><span>MIPI</span></div>
+            </div>
+            <!-- Languages, Scripting -->
+            <div class="tc-section">
+              <span class="tc-key">// Languages</span>
+              <div class="tc-vals"><span>System Verilog</span><span>Python</span></div>
+            </div>
+           <!-- EDA Tools -->
+            <div class="tc-section">
+              <span class="tc-key">// EDA Tools</span>
+              <div class="tc-vals"><span>Synopsys VCS</span><span>Verdi</span><span>Cadence Virtuoso</span><span>Innovus</span><span>Tempus</span></div>
+            </div>
+            <!-- Physical Design -->
+            <div class="tc-section">
+              <span class="tc-key">// RTL Design</span>
+              <div class="tc-vals"><span>Static Timing Analysis</span><span>RTL-GDSII flow</span></div>
+            </div>
+            <!--Computer Architecure-->
+            <div class="tc-section"><span class="tc-key">// Computer Architecture</span>
+            <div class="tc-vals"><span>Branch Prediction</span><span>Out of Order Execution</span><span>Cache Coherency</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" class="section">
+    <h2 class="section-title"><em>Work Experience</em></h2>
+    <div class="timeline">
+
+      <div class="tl-item reveal">
+        <div class="tl-meta">
+          <span class="tl-company">Qualcomm India Pvt Ltd.</span>
+          <span class="tl-period">Jul 2024 – Nov 2025</span>
+          <span class="tl-role">Design Verification Engineer · Bangalore</span>
+        </div>
+        <div class="tl-content">
+          <div class="tl-project">
+            <div class="tl-proj-header"><span class="proj-tag cam">Camera Verification</span></div>
+            <ul class="tl-bullets">
+              <li>Extracted functional requirements from micro-architecture documents to define block-level test plans; collaborated with design team to ensure correctness.</li>
+              <li>Root-caused a <strong>power-sequencing RTL bug</strong> using force statements to bypass the faulty signal and confirm downstream path integrity.</li>
+              <li>Identified an <strong>SoC-level register accessibility bug</strong> caused by SMMU stream-ID mismatch by correlating SMMU fault logs with register access failures.</li>
+              <li>Verified camera subsystem across <strong>5 clock speed configurations</strong> and multiple power collapse/re-initialization scenarios — validating register state retention, clock/reset sequencing, and error-free frame transfer resumption.</li>
+            </ul>
+          </div>
+          <div class="tl-project">
+            <div class="tl-proj-header"><span class="proj-tag llm">LLM-Based Test Automation</span></div>
+            <ul class="tl-bullets">
+              <li>Designed and deployed an <strong>LLM-driven model</strong> to generate C and SystemVerilog test sequences for multimedia and security IPs with targeted prompt engineering.</li>
+              <li>Led prompt engineering for fine-tuning on correct register programming and power &amp; clock sequencing.</li>
+              <li>Reduced manual effort by <strong>~30–40%</strong>, freeing engineers to focus on verification strategy over boilerplate code.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item reveal">
+        <div class="tl-meta">
+          <span class="tl-company">Cadence Design Systems</span>
+          <span class="tl-period">Jul 2023 – May 2024</span>
+          <span class="tl-role">Research Intern · Noida</span>
+        </div>
+        <div class="tl-content">
+          <div class="tl-project">
+            <div class="tl-proj-header"><span class="proj-tag thermal">Thermal-Driven PCB Macro Placement</span></div>
+            <ul class="tl-bullets">
+              <li>Modeled components using a <strong>2-resistor thermal network</strong> derived from four key temperature points; extended to multi-component systems via superposition.</li>
+              <li>Optimized placement reduced local temperature peaks and provided a predictive macro-positioning framework based on power profiles, improving design efficiency.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education" class="section edu-section">
+    <h2 class="section-title"><em>Education</em></h2>
+    <div class="edu-grid">
+      <div class="edu-card reveal">
+        <div class="edu-icon">🎓</div>
+        <div class="edu-info">
+          <h3>MTech — VLSI Design Tools &amp; Technology</h3>
+          <p class="edu-institute">Indian Institute of Technology, Delhi</p>
+          <div class="edu-meta"><span>Aug 2022 – May 2024</span><span class="edu-gpa">7.6 / 10</span></div>
+        </div>
+      </div>
+      </div>
+      <div class="edu-grid">
+      <div class="edu-card reveal">
+        <div class="edu-icon">🏛</div>
+        <div class="edu-info">
+          <h3>B.E. — Instrumentation &amp; Electronics</h3>
+          <p class="edu-institute">Jadavpur University</p>
+          <div class="edu-meta"><span>Aug 2018 – May 2022</span><span class="edu-gpa">8.0 / 10</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section">
+    <h2 class="section-title"><em>Projects</em></h2>
+    <div class="proj-grid">
+
+      <div class="proj-card reveal">
+        <div class="proj-top"><span class="proj-period">Mar – Apr 2026</span><a href="https://github.com/nitish-agrawal" class="proj-gh" target="_blank">GitHub ↗</a></div>
+        <h3 class="proj-title">Synchronous FIFO Verification</h3>
+        <p class="proj-desc">UVM-style layered testbench: transaction, driver, monitor. Directed tests for reset, overflow, underflow, data integrity. Self-checking scoreboard: <strong>12/12 pass</strong>.</p>
+        <div class="proj-tags"><span>UVM</span><span>SystemVerilog</span><span>Functional Coverage</span></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-top"><span class="proj-period">Feb – Mar 2026</span><a href="https://github.com/nitish-agrawal" class="proj-gh" target="_blank">GitHub ↗</a></div>
+        <h3 class="proj-title">AXI4 UVM Verification</h3>
+        <p class="proj-desc">Synthesizable AXI4-Lite DUT with write/read FSMs and SLVERR. Full UVM hierarchy, dual TLM analysis ports, coverage for burst types, transfer sizes, and FSM cross coverage.</p>
+        <div class="proj-tags"><span>AXI4-Lite</span><span>UVM</span><span>TLM</span><span>FSM</span></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-top"><span class="proj-period">Jan – Apr 2024</span><span class="proj-collab">Prof. Kaushik Saha</span></div>
+        <h3 class="proj-title">128k×8 SRAM Memory Design</h3>
+        <p class="proj-desc">Memory array + latch-type sense amplifier in Cadence Virtuoso. Read: <strong>5–5.5 ns</strong>. Write: <strong>6–7 ns</strong>. 70–90 mV min differential, 350–450 ps sensing delay.</p>
+        <div class="proj-tags"><span>Cadence Virtuoso</span><span>SRAM</span><span>Analog Design</span></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-top"><span class="proj-period">Jan – Apr 2023</span><span class="proj-collab">Prof. Jayadeva</span></div>
+        <h3 class="proj-title">8-bit Synchronous FIFO — RTL to GDSII</h3>
+        <p class="proj-desc">Verilog FIFO using extra-bit pointer scheme. Full RTL-to-GDSII: Cadence Genus, Innovus, setup/hold resolution, final signoff in Cadence Tempus.</p>
+        <div class="proj-tags"><span>Verilog</span><span>Genus</span><span>Innovus</span><span>Tempus</span></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-top"><span class="proj-period">Oct – Nov 2022</span><span class="proj-collab">Prof. Jayadeva</span></div>
+        <h3 class="proj-title">Mod-6 Up/Down Counter — 65nm</h3>
+        <p class="proj-desc">Schematic &amp; layout on UMC 65nm. Gray-code sequencing to minimize switching. <strong>3.2 GHz</strong>, <strong>32 µW</strong>, <strong>113 µm²</strong> — DRC &amp; LVS clean.</p>
+        <div class="proj-tags"><span>65nm</span><span>Cadence Virtuoso</span><span>DRC/LVS</span></div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-top"><span class="proj-period">Sept – Nov 2022</span><span class="proj-collab">Prof. S.R. Sarangi</span></div>
+        <h3 class="proj-title">Branch Predictor Design</h3>
+        <p class="proj-desc">Pag predictor with GHR-based per-address tables: <strong>98% accuracy</strong>. Tournament predictor (local + global + 2-bit chooser): <strong>97% accuracy</strong> on test traces.</p>
+        <div class="proj-tags"><span>CPU Architecture</span><span>Branch Prediction</span><span>GHR</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- INTERVIEW NOTES -->
+  <section id="notes" class="section notes-section">
+    <h2 class="section-title"><em>Knowledge Base</em></h2>
+    <p class="section-sub">Click a topic folder to browse all notes inside it.</p>
+
+    <!-- =====================================================
+      FOLDER CARDS
+      To add a new topic folder:
+        1. Copy one <a class="folder-card"> block below
+        2. Change: href, folder-color style, folder-icon,
+                   folder-topic, folder-name, folder-desc, pills
+        3. Create the matching notes/FOLDERNAME/index.html
+        4. git add . && git commit && git push
+    ===================================================== -->
+    <div class="folder-grid">
+
+      <a href="notes/protocols/index.html" class="folder-card reveal">
+        <div class="folder-stripe" style="background:var(--accent2);"></div>
+        <div class="folder-icon">⚡</div>
+        <div class="folder-body">
+          <span class="folder-topic" style="color:var(--accent2);">Protocols</span>
+          <h3 class="folder-name">AMBA &amp; Bus Protocols</h3>
+          <p class="folder-desc">AXI4, AHB, APB, MIPI — signal-level details, timing, burst types, and verification checklists.</p>
+          <div class="folder-pills"><span>AXI4</span><span>AHB</span><span>APB</span><span>MIPI</span></div>
+        </div>
+        <span class="folder-arrow">→</span>
+      </a>
+
+      <a href="notes/systemverilog/index.html" class="folder-card reveal">
+        <div class="folder-stripe" style="background:var(--accent3);"></div>
+        <div class="folder-icon">💻</div>
+        <div class="folder-body">
+          <span class="folder-topic" style="color:var(--accent3);">SystemVerilog</span>
+          <h3 class="folder-name">SystemVerilog Language</h3>
+          <p class="folder-desc">SVA assertions, functional coverage, constrained randomization, OOP, interfaces, and clocking blocks.</p>
+          <div class="folder-pills"><span>SVA</span><span>Covergroup</span><span>Constraints</span><span>OOP</span></div>
+        </div>
+        <span class="folder-arrow">→</span>
+      </a>
+
+      <a href="notes/uvm/index.html" class="folder-card reveal">
+        <div class="folder-stripe" style="background:var(--accent);"></div>
+        <div class="folder-icon">🧪</div>
+        <div class="folder-body">
+          <span class="folder-topic" style="color:var(--accent);">UVM</span>
+          <h3 class="folder-name">Universal Verification Methodology</h3>
+          <p class="folder-desc">Testbench architecture, agents, TLM ports, phases, factory overrides, config_db — full UVM reference.</p>
+          <div class="folder-pills"><span>uvm_agent</span><span>TLM</span><span>Phases</span><span>Factory</span></div>
+        </div>
+        <span class="folder-arrow">→</span>
+      </a>
+
+      <a href="notes/concepts/index.html" class="folder-card reveal">
+        <div class="folder-stripe" style="background:#fbbf24;"></div>
+        <div class="folder-icon">🧠</div>
+        <div class="folder-body">
+          <span class="folder-topic" style="color:#fbbf24;">Concepts</span>
+          <h3 class="folder-name">CS &amp; SoC Concepts</h3>
+          <p class="folder-desc">SMMU, IOMMU, power domains, clock &amp; reset, SoC debug, OS fundamentals — theory for technical rounds.</p>
+          <div class="folder-pills"><span>SMMU</span><span>SoC Debug</span><span>Power</span><span>Clocking</span></div>
+        </div>
+        <span class="folder-arrow">→</span>
+      </a>
+
+      <a href="notes/behavioral/index.html" class="folder-card reveal">
+        <div class="folder-stripe" style="background:#c084fc;"></div>
+        <div class="folder-icon">🎯</div>
+        <div class="folder-body">
+          <span class="folder-topic" style="color:#c084fc;">Behavioral</span>
+          <h3 class="folder-name">Behavioral &amp; HR Rounds</h3>
+          <p class="folder-desc">STAR-format stories from Qualcomm and Cadence — leadership, debugging ownership, cross-team work, LLM impact.</p>
+          <div class="folder-pills"><span>STAR</span><span>Leadership</span><span>Ownership</span><span>Impact</span></div>
+        </div>
+        <span class="folder-arrow">→</span>
+      </a>
+
+    </div>
+    <p class="notes-cta">More folders and notes added as prep continues.</p>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <span style="display:flex;align-items:center;gap:0.6rem;"><img src="profile.jpg" alt="" style="width:22px;height:22px;border-radius:50%;object-fit:cover;border:1px solid var(--accent);opacity:0.8;" /> Nitish Agrawal</span>
+      
+      <span><a href="mailto:nitishagrawal35@gmail.com" > ✉: nitishagrawal35@gmail.com </a></span>
+      <span><a href="tel:+917999466545"> ☎: +91 7999466545 </a></span>
+      <span><a href="https://linkedin.com/in/nitish-agrawal" target="_blank"> LinkedIn ↗ </a></span> 
+    </div>
+    
+  </footer>
+
+  <script src="script_new.js"></script>
+</body>
+</html>
